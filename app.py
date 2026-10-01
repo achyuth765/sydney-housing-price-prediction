@@ -100,3 +100,16 @@ st.caption(
     "Built for the SIT720 Sydney Housing Price Prediction mini project. "
     "Model: see notebook Section 3.6 for which algorithm was selected and why."
 )
+
+
+st.divider()
+st.header("📝 User feedback")
+st.write("Please test the predictor and record your genuine feedback. Feedback is saved locally to `feedback.csv` for the project evaluation.")
+rating = st.select_slider("How useful was the prediction?", options=[1,2,3,4,5], value=3)
+feedback = st.text_area("What worked well, and what should be improved?")
+if st.button("Submit feedback"):
+    import os
+    from datetime import datetime
+    row = pd.DataFrame([{"Timestamp": datetime.now().isoformat(timespec="seconds"), "Rating": rating, "Feedback": feedback}])
+    row.to_csv("feedback.csv", mode="a", header=not os.path.exists("feedback.csv"), index=False)
+    st.success("Feedback saved. Thank you for testing the application.")
